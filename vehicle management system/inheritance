@@ -1,143 +1,124 @@
 import java.util.Scanner;
-import java.time.Year;
 
 class Vehicle {
     String brand;
     String model;
     int year;
-    double basePrice;
+    double baseprice;
 
-    Vehicle(String brand, String model, int year, double basePrice) {
+    Vehicle() {}
+
+    Vehicle(String brand, String model, int year, double baseprice) {
         this.brand = brand;
         this.model = model;
         this.year = year;
-        this.basePrice = basePrice;
+        this.baseprice = baseprice;
     }
 
-    void displayInfo() {
+    void displayinfo() {
         System.out.println("Brand: " + brand);
         System.out.println("Model: " + model);
         System.out.println("Year: " + year);
-        System.out.printf("Base Price: %.2f\n", basePrice);
+        System.out.println("Base Price: " + baseprice);
     }
 
     void calculateResaleValue() {
-        int currentYear = Year.now().getValue();
-        int age = currentYear - year;
-        double resaleValue = basePrice * Math.pow(0.85, age);
-        System.out.printf("Resale Value: %.2f\n", resaleValue);
+        double resaleValue = baseprice * 0.85;
+        System.out.println("Resale Value: " + resaleValue);
     }
 }
 
 class Car extends Vehicle {
     int numberOfDoors;
 
-    Car(String brand, String model, int year, double basePrice, int numberOfDoors) {
-        super(brand, model, year, basePrice);
+    Car(String brand, String model, int year, double baseprice, int numberOfDoors) {
+        super(brand, model, year, baseprice);
         this.numberOfDoors = numberOfDoors;
     }
 
-    void calculateInsurance() {
-       
-        double insurance = 5000* basePrice + 1000 * numberOfDoors;
-        System.out.printf("Insurance: %.2f\n", insurance);
+    public void calculateinsurance() {
+        double insurance = 1000 + (numberOfDoors * 1000);
+        System.out.println("Insurance Cost: " + insurance);
     }
 
-    void calculateMaintenanceCost() {
-        int age = Year.now().getValue() - year;
-        double maintenanceCost = 3000 * age + 500 * numberOfDoors;
-        System.out.printf("Maintenance: %.2f\n", maintenanceCost);
+    public void calculatemaintenance() {
+        double maintenanceCost = 3000 + (numberOfDoors * 500);
+        System.out.println("Maintenance Cost: " + maintenanceCost);
     }
 
-    void totalDetails() {
-        System.out.println("\n--- Car Details ---");
-        displayInfo();
-        calculateResaleValue();
-        calculateInsurance();
-        calculateMaintenanceCost();
+    public void displayinfo() {
+        super.displayinfo();
         System.out.println("Number of Doors: " + numberOfDoors);
+        calculateinsurance();
+        calculatemaintenance();
     }
 }
 
 class Motorcycle extends Vehicle {
-    boolean hasSidecar;
+    String sidecar;
 
-    Motorcycle(String brand, String model, int year, double basePrice, boolean hasSidecar) {
-        super(brand, model, year, basePrice);
-        this.hasSidecar = hasSidecar;
+    Motorcycle(String brand, String model, int year, double baseprice, String sidecar) {
+        super(brand, model, year, baseprice);
+        this.sidecar = sidecar;
     }
 
-    void calculateInsurance() {
-        double insurance;
-        if (hasSidecar) {
-            insurance = 2500* basePrice + 1500;
-        } else {
-            insurance = 2500* basePrice;
+    void calculateinsurance() {
+        double insurance = 2500;
+        if (sidecar.equalsIgnoreCase("Yes")) {
+            insurance += 1500;
         }
-        System.out.printf("Insurance: %.2f\n", insurance);
+        System.out.println("Insurance Cost: " + insurance);
     }
 
-    void calculateMaintenanceCost() {
-        int age = Year.now().getValue() - year;
-        double maintenanceCost;
-        if (hasSidecar) {
-            maintenanceCost = 2000 * age + 1000;
-        } else {
-            maintenanceCost = 2000 * age;
+    void calculateMaintenance() {
+        double maintenanceCost = 2000;
+        if (sidecar.equalsIgnoreCase("Yes")) {
+            maintenanceCost += 1000;
         }
-        System.out.printf("Maintenance: %.2f\n", maintenanceCost);
+        System.out.println("Maintenance Cost: " + maintenanceCost);
     }
 
-    void totalDetails() {
-        System.out.println("\n--- Motorcycle Details ---");
-        displayInfo();
-        calculateResaleValue();
-        calculateInsurance();
-        calculateMaintenanceCost();
-        System.out.println("Sidecar: " + hasSidecar);
+    
+    public void displayinfo() {
+        super.displayinfo();
+        System.out.println("Sidecar: " + sidecar);
+        calculateinsurance();
+        calculateMaintenance();
     }
 }
 
-public class VehicleDetails {
-    public static void main(String args[]) {
+public class VehicleManagementSystem {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        
-        System.out.println("-----------Enter Car Details---------");
-        System.out.print("Enter Brand: ");
-        String carBrand = sc.nextLine();
-        System.out.print("Enter Model: ");
-        String carModel = sc.nextLine();
-        System.out.print("Enter Year: ");
-        int carYear = sc.nextInt();
-        System.out.print("Enter Base Price: ");
-        double carBasePrice = sc.nextDouble();
-        System.out.print("Enter Number of Doors: ");
-        int numberOfDoors = sc.nextInt();
-        sc.nextLine(); // consume leftover newline
+        System.out.print("Enter vehicle brand: ");
+        String brand = sc.nextLine();
 
-        Car car = new Car(carBrand, carModel, carYear, carBasePrice, numberOfDoors);
+        System.out.print("Enter vehicle model: ");
+        String model = sc.nextLine();
 
-       
-        System.out.println("-----------Enter Motorcycle Details---------");
-        System.out.print("Enter Brand: ");
-        String bikeBrand = sc.nextLine();
-        System.out.print("Enter Model: ");
-        String bikeModel = sc.nextLine();
-        System.out.print("Enter Year: ");
-        int bikeYear = sc.nextInt();
-        System.out.print("Enter Base Price: ");
-        double bikeBasePrice = sc.nextDouble();
-        System.out.print("Does it have a sidecar (true/false)? ");
-        boolean hasSidecar = sc.nextBoolean();
+        System.out.print("Enter vehicle year: ");
+        int year = sc.nextInt();
 
-        Motorcycle motorcycle = new Motorcycle(bikeBrand, bikeModel, bikeYear, bikeBasePrice, hasSidecar);
+        System.out.print("Enter vehicle base price: ");
+        double baseprice = sc.nextDouble();
 
-        System.out.println("\n---------Vehicle Details----------");
-        car.totalDetails();
-        motorcycle.totalDetails();
+        sc.nextLine(); 
 
-        sc.close();
-    }
+        Vehicle vehicle = new Vehicle(brand, model, year, baseprice);
+        System.out.println("\n--- Vehicle Info ---");
+        vehicle.displayinfo();
+        vehicle.calculateResaleValue();
+
+        Car car = new Car(brand, model, year, baseprice, 4);
+        System.out.println("\n--- Car Info ---");
+        car.displayinfo();
+
+        System.out.print("\nDoes the motorcycle have a sidecar? (Yes/No): ");
+        String sidecar = sc.nextLine();
+
+        Motorcycle motorcycle = new Motorcycle(brand, model, year, baseprice, sidecar);
+        System.out.println("\n--- Motorcycle Info ---");
+        motorcycle.displayinfo();
+    }
 }
- 
